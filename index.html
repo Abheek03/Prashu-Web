@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script&display=swap" rel="stylesheet">
+    <style>
+        *{
+            font-family: "Oleo script", cursive;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #add8e6;
+            overflow: hidden;
+        }
+
+        #modal {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: x-large;
+            color: white;
+            background-color:   black; /* Semi-transparent white background */
+            z-index: 1000; /* Higher z-index to ensure it appears on top of other elements */
+        }
+
+        #modal-content {
+            text-align: center;
+            padding: 20px;
+        }
+
+        #top-text, #bottom-text, #cake-text {
+            display: none; /* Hide the text initially */
+        } 
+
+        .show {
+            display: block !important; /* Show the text when the "show" class is added */
+        }
+
+        #top-text {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            white-space: nowrap;
+            font-size: 24px;
+            font-weight: bold;
+            animation: moveLeftToRight 7s linear infinite;
+        }
+
+        #bottom-text {
+            position: absolute;
+            bottom: 20px;
+            right: 0;
+            white-space: nowrap;
+            font-size: 24px;
+            font-weight: bold;
+            animation: moveRightToLeft 7s linear infinite;
+        }
+
+        @keyframes moveLeftToRight {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        @keyframes moveRightToLeft {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        #cake-container {
+            position: relative;
+            width: 300px; /* Increase the width */
+            height: 200px; /* Increase the height */
+            overflow: hidden; /* Hide overflowing elements */
+        }
+
+        #cake {
+            width: 100%;
+            height: 100%;
+            background-color: #ffecb3; /* Cake color */
+            border-radius: 50% 50% 0 0; /* Make it circular at the top */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        #cake-text {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        #candle-container {
+            position: absolute;
+            top: 155px; /* Adjust the candle position to be on top of the cake */
+            left: 50%; /* Center the candle horizontally */
+            transform: translateX(-50%);
+        }
+
+        #candle {
+            width: 20px;
+            height: 50px;
+            background-color: #ffcc00; /* Candle color */
+            border-radius: 5px;
+        }
+
+        #flame {
+            position: absolute;
+            width: 40px;
+            height: 60px;
+            background: conic-gradient(from 180deg at 50% 100%, #ffcc00 0%, #ff0000 20%, #ffcc00 40%, #ff0000 60%, #ffcc00 80%, #ff0000 100%);
+            border-radius: 50%;
+            top: -61px; /* Adjust the flame position */
+            left: -10px; /* Center the flame horizontally */
+            transform: translateX(-50%);
+            animation: flameAnimation 1s infinite alternate;
+        }
+
+        @keyframes flameAnimation {
+            0% {
+                transform: scaleY(1);
+            }
+            100% {
+                transform: scaleY(1.2);
+            }
+        }
+    </style>
+    <title>Cake Blowing App</title>
+</head>
+<body>
+    <div id="modal">
+        <div id="modal-content">
+            <p>Hello  Prashu </p>
+            <p>Welcome to your birthday wala website. As you know i am a web dev toh website bana na toh banta hai</p>
+            <p>I want to say that you deserve everything in this world. You have been the most wonderful and like the perfect human i have ever wanted</p>
+            <p>Since its your birthday I want it to be the best day of your life as it is special for me as well <br> because you the one and the only better half of me, my favourite, my world, my everything</p>
+            <p>Thank you for giving me all your love and affection also taking care of me like a baby <br>there arent enough words to describe you but I want to say that I love my world and you are my world</p>
+        </div>
+    </div>
+    <div id="top-text"> 💟 Happy 24th Birthday <span id="top-word">Prashu</span> Love you so much mmmuuuaaahhh 💟 </div>
+
+    <div id="cake-container">
+        <div id="cake">
+            <div id="cake-text">🎂 Happy Birthday Prashu 🎂<br> 🎁 hope you have a great day 🎁<br> 🥳wishing for the best of you 🥳<br>💝 Love You 💝<br> 🎆 All your dreams will come true 🎆 </div>
+        </div>
+    </div>
+    <div id="candle-container">
+        <div id="candle"></div>
+        <div id="flame"></div>
+    </div>
+    <div id="bottom-text">💟 Happy 24th Birthday <span id="bottom-word">Prashu</span> Love you so much mmmuuuaaahhh 💟 </div>
+    <script>
+        const topText = document.getElementById('top-text');
+        const bottomText = document.getElementById('bottom-text');
+        const cakeText = document.getElementById('cake-text');
+
+        const candleContainer = document.getElementById('candle-container');
+        const candle = document.getElementById('candle');
+        const flame = document.getElementById('flame');
+
+        let isCandleLit = false;
+
+        // Add a candle when clicking anywhere on the screen
+        document.addEventListener('click', () => {
+            if (!isCandleLit) {
+                candle.style.backgroundColor = '#ff0000'; // Change candle color to lit
+                flame.style.display = 'block'; // Show the flame
+                isCandleLit = true;
+                listenForBlow();
+            }
+        });
+
+        // Listen for blowing sound using the microphone
+        function listenForBlow() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const analyser = audioContext.createAnalyser();
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then((stream) => {
+                    const microphone = audioContext.createMediaStreamSource(stream);
+                    microphone.connect(analyser);
+                    analyser.connect(audioContext.destination);
+
+                    analyser.fftSize = 256;
+                    const bufferLength = analyser.frequencyBinCount;
+                    const dataArray = new Uint8Array(bufferLength);
+
+                    function detectBlow() {
+                        analyser.getByteFrequencyData(dataArray);
+                        const average = dataArray.reduce((acc, value) => acc + value, 0) / bufferLength;
+
+                        // Adjust the threshold value for sensitivity
+                        const threshold = 30;
+
+                        if (average > threshold) {
+                            extinguishCandle();
+                        }
+
+                        requestAnimationFrame(detectBlow);
+                    }
+
+                    detectBlow();
+                })
+                .catch((err) => {
+                    console.error('Error accessing microphone:', err);
+                });
+        }
+
+        // Extinguish the candle
+        function extinguishCandle() {
+            candle.style.backgroundColor = '#ffcc00'; // Change candle color back to unlit
+            flame.style.display = 'none'; // Hide the flame
+            isCandleLit = false;
+            // Show the text elements
+            topText.classList.add('show');
+            bottomText.classList.add('show');
+            cakeText.classList.add('show');
+            // Hide the modal content
+            modal.style.display = 'none';
+        }
+
+        const topWordElement = document.getElementById('top-word');
+        const bottomWordElement = document.getElementById('bottom-word');
+
+        const topWords = ['Magarmuch', 'Cutie', 'ladoo', 'Beauty','Madam'];
+        const bottomWords = ['Pyaru', 'Bittu', 'lover', 'Hottie','Cuttu'];
+
+        let topIndex = 0;
+        let bottomIndex = 0;
+
+        function updateTopWord() {
+            topWordElement.textContent = topWords[topIndex];
+            topIndex = (topIndex + 1) % topWords.length;
+        }
+
+        function updateBottomWord() {
+            bottomWordElement.textContent = bottomWords[bottomIndex];
+            bottomIndex = (bottomIndex + 1) % bottomWords.length;
+        }
+
+        document.getElementById('top-text').addEventListener('animationiteration', updateTopWord);
+        document.getElementById('bottom-text').addEventListener('animationiteration', updateBottomWord);
+
+        // Automatically hide the modal after 15 seconds
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 15000);
+    </script>
+</body>
+</html>
